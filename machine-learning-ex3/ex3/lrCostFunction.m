@@ -36,8 +36,20 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+%Computing cost
+% =============================================================
+H = sigmoid(X*theta);
 
+J1 = -sum(y.*log(H));
+J2 = -sum((1-y).*log(1-H));
+J3 = lambda/2 * (sum(theta.^2) - theta(1)^2);
 
+J = 1/m * (J1 + J2 + J3);
+
+%Computing the gradient
+% =============================================================
+grad = (X' * (H-y) + lambda*theta)/m;
+grad(1) = grad(1) - lambda*theta(1)/m;
 
 
 
