@@ -23,9 +23,28 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+choices = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
 
+curr_diff = 1;
 
+for i = 1:length(choices)
+  C_temp = choices(i);
+  for j = 1: length(choices)
+    sigma_temp = choices(j);
+    %fprintf('Training with C = %f, sigma = %f.\n', C_temp, sigma_temp);
+    model= svmTrain(X, y, C_temp, @(x1, x2) gaussianKernel(x1, x2, sigma_temp));
+    pred = svmPredict(model, Xval);
+    diff = mean(double(pred ~= yval));
+    %fprintf('Difference = %f\n\n', diff);
+    if diff < curr_diff
+      curr_diff = diff;
+      C = C_temp;
+      sigma = sigma_temp;
+    end
+  end
+end
 
+fprintf('Optimal C = %f, sigma = %f.\n', C, sigma);
 
 
 

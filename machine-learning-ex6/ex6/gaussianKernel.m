@@ -15,7 +15,11 @@ sim = 0;
 %               sigma
 %
 %
+delta = x1 - x2;
 
+delta = sum(delta.^2);
+
+sim = exp(-delta/(2*sigma^2));
 
 
 
